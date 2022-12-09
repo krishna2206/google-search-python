@@ -147,7 +147,7 @@ def parse_results_data(results_data: list):
         if results_data[i] is not None:
             try:
                 cleaned_results.append({
-                    "title": results_data[i][1][9].get(list(results_data[i][1][9].keys())[-1])[-1],
+                    "title": results_data[i][1][22].get(list(results_data[i][1][22].keys())[-1])[-1],
                     "original": {
                         "url": results_data[i][1][3][0],
                         "width": results_data[i][1][3][2],
@@ -159,13 +159,13 @@ def parse_results_data(results_data: list):
                         "height": results_data[i][1][2][1]
                     },
                 })
-            #? Raised when parsing "Associated searches"
+            #? Raised when parsing "Similar searches"
             except TypeError:
                 pass
             else:
                 try:
-                    cleaned_results[-1]["sourceWebsite"] = results_data[i][1][9].get(list(results_data[i][1][9].keys())[-2])[17]
-                    cleaned_results[-1]["pageURL"] = results_data[i][1][9].get(list(results_data[i][1][9].keys())[-2])[2]
+                    cleaned_results[-1]["sourceWebsite"] = results_data[i][1][22].get(list(results_data[i][1][22].keys())[-2])[17]
+                    cleaned_results[-1]["pageURL"] = results_data[i][1][22].get(list(results_data[i][1][22].keys())[-2])[2]
                 except (IndexError, KeyError):
                     cleaned_results[-1]["sourceWebsite"] = None
                     cleaned_results[-1]["pageURL"] = None
