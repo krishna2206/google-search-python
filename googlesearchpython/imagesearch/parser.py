@@ -12,6 +12,7 @@ def parse_js_data(html_content: str):
     :type html_content: str
     :return: chips, tbs, results, next_page_data
     """
+
     soup = BeautifulSoup(html_content, features="lxml")
 
     nonce_value = soup.find("script", attrs={"data-id": "_gd"})["nonce"]
@@ -58,6 +59,7 @@ def parse_json_data(json_data: str):
     :type json_data: str
     :return: The results and next_page_data are being returned.
     """
+
     json_to_parse = None
     for line in json_data.split("\n"):
         if '[["wrb.fr","HoAMBc",' in line:
@@ -89,6 +91,7 @@ def parse_chips_data(chips_data: list):
     :type chips_data: list
     :return: A list of dictionaries.
     """
+
     cleaned_chips = chips_data
     for i in range(len(chips_data)):
         try:
@@ -114,6 +117,7 @@ def parse_tbs_data(tbs_data: list):
     :type tbs_data: list
     :return: A list of dictionaries.
     """
+
     cleaned_tbs = []
     for i, category in enumerate(tbs_data):
         cleaned_tbs.append({
@@ -140,6 +144,7 @@ def parse_results_data(results_data: list):
     :return: A list of dictionaries containing the image's title, original image's url, width, and
     height, thumbnail's url, width, and height, source website, and page url.
     """
+
     cleaned_results = []
     for i in range(len(results_data)):
         results_data[i] = results_data[i][0][0]["444383007"]
@@ -147,7 +152,7 @@ def parse_results_data(results_data: list):
         if results_data[i] is not None:
             try:
                 cleaned_results.append({
-                    "title": results_data[i][1][22].get(list(results_data[i][1][22].keys())[-1])[-1],
+                    "title": results_data[i][1][23].get(list(results_data[i][1][23].keys())[-1])[-1],
                     "original": {
                         "url": results_data[i][1][3][0],
                         "width": results_data[i][1][3][2],
@@ -164,8 +169,8 @@ def parse_results_data(results_data: list):
                 pass
             else:
                 try:
-                    cleaned_results[-1]["sourceWebsite"] = results_data[i][1][22].get(list(results_data[i][1][22].keys())[-2])[17]
-                    cleaned_results[-1]["pageURL"] = results_data[i][1][22].get(list(results_data[i][1][22].keys())[-2])[2]
+                    cleaned_results[-1]["sourceWebsite"] = results_data[i][1][23].get(list(results_data[i][1][23].keys())[-2])[17]
+                    cleaned_results[-1]["pageURL"] = results_data[i][1][23].get(list(results_data[i][1][23].keys())[-2])[2]
                 except (IndexError, KeyError):
                     cleaned_results[-1]["sourceWebsite"] = None
                     cleaned_results[-1]["pageURL"] = None
