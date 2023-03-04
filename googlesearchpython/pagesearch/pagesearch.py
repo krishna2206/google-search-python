@@ -15,6 +15,8 @@ class PageSearch(GoogleSearch, Requests):
         self.results = {
             "page": 1,
             "end": False,
+            "relevant_result": None,
+            "related_questions": None,
             "results": None
         }
 
@@ -36,12 +38,15 @@ class PageSearch(GoogleSearch, Requests):
     def __get_results(self):
         html_result = self.__fetch_html_result()
 
-        parsed_results = parse_html_result(html_result)
+        relevant_result, related_questions, results = parse_html_result(html_result)
 
-        if len(parsed_results) == 0:
+        if len(results) == 0:
             self.results["end"] = True
 
-        self.results["results"] = parsed_results
+        if self.page == 1:
+            self.results["relevant_result"] = relevant_result
+            self.results["related_questions"] = related_questions
+        self.results["results"] = results
 
     def __fetch_html_result(self):
         request_body = {
