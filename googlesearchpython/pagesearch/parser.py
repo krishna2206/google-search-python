@@ -29,9 +29,10 @@ def parse_html_result(html_result: str) -> tuple:
                     except AttributeError:
                         relevant_result = None
                     else:
-                        tooltip_content = relevant_result.find("div", class_="dA3V2b")
-                        if tooltip_content is not None:
-                            snippet_content = snippet_content.replace(tooltip_content.text, "")
+                        tooltips = relevant_result.findAll("div", class_="dA3V2b")
+                        if tooltips is not None:
+                            for tooltip in tooltips:
+                                snippet_content = snippet_content.replace(tooltip.text, "")
 
                         relevant_result = {
                             "type": "featured_snippet",
