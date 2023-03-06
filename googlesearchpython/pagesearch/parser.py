@@ -6,6 +6,7 @@ def parse_html_result(html_result: str) -> tuple:
     soup = BeautifulSoup(html_result, features="lxml")
 
     relevant_result = None
+    related_questions = []
     results = []
 
     results_block = soup.find("div", id="rso")
@@ -69,7 +70,6 @@ def parse_html_result(html_result: str) -> tuple:
                     relevant_result = None
 
             # ? Parsing "people also ask" part (if it exists)
-            related_questions = []
             related_questions_blocks = results_block.findAll("div", attrs={"jsname": "yEVEwb"})
             if len(related_questions_blocks) > 0:
                 related_questions = [
