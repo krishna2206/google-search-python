@@ -72,9 +72,13 @@ def parse_html_result(html_result: str) -> tuple:
             # ? Parsing "people also ask" part (if it exists)
             related_questions_blocks = results_block.findAll("div", attrs={"jsname": "yEVEwb"})
             if len(related_questions_blocks) > 0:
-                related_questions = [
-                    question.find("div", class_="hwqd7e d0fCJc BOZ6hd").find("a").text
-                    for question in related_questions_blocks]
+                for question in related_questions_blocks:
+                    try:
+                        qst = question.find("div", class_="hwqd7e d0fCJc BOZ6hd").find("a").text
+                    except AttributeError:
+                        pass
+                    else:
+                        related_questions.append(qst)
 
             # ? Parsing results items
             for item in results_items:
