@@ -13,15 +13,15 @@ def parse_html_result(html_result):
             for result_block in results_blocks:
                 try:
                     result = {
-                        "title": result_block.find("h3", class_="LC20lb MBeuO DKV0Md").text,
-                        "fileType": result_block.find("span", class_="ZGwO7 C0kchf NaCKVc yUTMj VDgVie").text,
+                        "title": result_block.find("h3").text,
+                        "fileType": result_block.find("span", class_="ZGwO7 s4H5Cf C0kchf NaCKVc yUTMj VDgVie").text,
                         "url": result_block.findAll("a")[0]["href"],
                         "description": unicodedata.normalize(
                             "NFKD", result_block.find("div", class_="VwiC3b yXK7lf MUxGbd yDYNvb lyLwlc lEBKkf").text)
                     }
                 except AttributeError:
                     result = {
-                        "title": result_block.find("h3", class_="LC20lb MBeuO DKV0Md").text,
+                        "title": result_block.find("h3").text,
                         "fileType": None,
                         "url": result_block.findAll("a")[0]["href"],
                         "description": unicodedata.normalize(
