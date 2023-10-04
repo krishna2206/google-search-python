@@ -3,22 +3,21 @@ from bs4 import BeautifulSoup
 
 
 def parse_html_result(html_result: str) -> tuple:
-    soup = BeautifulSoup(html_result, features="lxml")
+    results_block = BeautifulSoup(html_result, features="lxml")
 
     relevant_result = None
     related_questions = []
     results = []
 
-    results_block = soup.find("div", id="rso")
     if results_block is not None:
-        results_items = results_block.findAll("div", class_="kvH3mc BToiNc UK95Uc")
+        results_items = results_block.findAll("div", class_="N54PNb BToiNc cvP2Ce")
 
         if len(results_items) != 0:
             relevant_result = results_block.find("div", class_="ifM9O")
 
             # ? Parsing relevant results
             if relevant_result is not None:
-                is_featured_snippet = relevant_result.find("h2", class_="Uo8X3b OhScic zsYMMe") is not None
+                is_featured_snippet = relevant_result.find("h2", class_="bNg8Rb OhScic zsYMMe BBwThe") is not None # ? "Extrait optimisé sur le Web"
                 is_knowledge_panel = relevant_result.find("div", class_="kp-header") is not None
 
                 # ? Featured snippet
@@ -30,7 +29,7 @@ def parse_html_result(html_result: str) -> tuple:
                     except AttributeError:
                         relevant_result = None
                     else:
-                        tooltips = relevant_result.findAll("div", class_="dA3V2b")
+                        tooltips = relevant_result.findAll("div", class_="nnFGuf")
                         if tooltips is not None:
                             for tooltip in tooltips:
                                 snippet_content = snippet_content.replace(tooltip.text, "")
@@ -39,6 +38,7 @@ def parse_html_result(html_result: str) -> tuple:
                             "type": "featured_snippet",
                             "title": relevant_result.find("h3", class_="LC20lb MBeuO DKV0Md").text,
                             "url": relevant_result.find("a")["href"],
+                            # ! Deprecated
                             "date": (
                                 None
                                 if relevant_result.find("span", class_="kX21rb ZYHQ7e") is None
@@ -62,8 +62,8 @@ def parse_html_result(html_result: str) -> tuple:
                             .text,
                         "content": (
                             None
-                            if relevant_result.find("div", class_="yxAsKe kZ91ed") is None
-                            else relevant_result.find("div", class_="yxAsKe kZ91ed").text)
+                            if relevant_result.find("div", class_="LGOjhe") is None
+                            else relevant_result.find("div", class_="LGOjhe").text)
                     }
 
                 else:
@@ -74,7 +74,7 @@ def parse_html_result(html_result: str) -> tuple:
             if len(related_questions_blocks) > 0:
                 for question in related_questions_blocks:
                     try:
-                        qst = question.find("div", class_="hwqd7e d0fCJc BOZ6hd").find("a").text
+                        qst = question.find("span", class_="CSkcDe").text
                     except AttributeError:
                         pass
                     else:
@@ -82,13 +82,13 @@ def parse_html_result(html_result: str) -> tuple:
 
             # ? Parsing results items
             for item in results_items:
-                if item.find("span", class_="ZGwO7 C0kchf NaCKVc yUTMj VDgVie") is None:
+                # if item.find("span", class_="ZGwO7 C0kchf NaCKVc yUTMj VDgVie") is None:
                     try:
                         result_item = {
                             "title": item.find("h3", class_="LC20lb MBeuO DKV0Md").text,
                             "url": item.findAll("a")[0]["href"],
                             "description": unicodedata.normalize(
-                                "NFKD", item.find("div", class_="VwiC3b yXK7lf MUxGbd yDYNvb lyLwlc lEBKkf").text)
+                                "NFKD", item.find("div", class_="VwiC3b yXK7lf lyLwlc yDYNvb W8l4ac lEBKkf").text)
                         }
                     except AttributeError:
                         pass
