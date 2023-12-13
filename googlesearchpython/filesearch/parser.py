@@ -1,5 +1,8 @@
+import traceback
 import unicodedata
 from bs4 import BeautifulSoup
+
+from googlesearchpython.logger import logger
 
 
 def parse_html_result(html_result):
@@ -15,14 +18,16 @@ def parse_html_result(html_result):
                         "title": result_block.find("h3").text,
                         "url": result_block.findAll("a")[0]["href"],
                         "description": unicodedata.normalize(
-                            "NFKD", result_block.find("div", class_="VwiC3b yXK7lf fS1kJf lyLwlc yDYNvb W8l4ac lEBKkf").text)
+                            "NFKD", result_block.find("div", class_="VwiC3b yXK7lf lVm3ye r025kc hJNv6b Hdw6tb").text)
                     }
                 except AttributeError:
+                    logger.error(traceback.format_exc())
+
                     result = {
                         "title": result_block.find("h3").text,
                         "url": result_block.findAll("a")[0]["href"],
                         "description": unicodedata.normalize(
-                            "NFKD", result_block.find("div", class_="VwiC3b yXK7lf lyLwlc yDYNvb W8l4ac lEBKkf").text)
+                            "NFKD", result_block.find("div", class_="VwiC3b yXK7lf lVm3ye r025kc hJNv6b Hdw6tb").text)
                     }
                 results.append(result)
     return results
