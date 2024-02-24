@@ -21,7 +21,9 @@ def parse_html_result(html_result):
                             "title": result_block.find("h3").text,
                             "url": result_block.findAll("a")[0]["href"],
                             "description": unicodedata.normalize(
-                                "NFKD", result_block.find("div", class_="VwiC3b yXK7lf fS1kJf lVm3ye r025kc hJNv6b Hdw6tb").text)
+                                "NFKD", result_block.find("div", class_="VwiC3b yXK7lf fS1kJf lVm3ye r025kc hJNv6b Hdw6tb").text
+                            ),
+                            "page_count": int(result_block.find("div", class_="LEwnzc Sqrs4e").text.replace("pages", "").strip())
                         }
                     except AttributeError:
                         logger.error(traceback.format_exc())
@@ -30,7 +32,9 @@ def parse_html_result(html_result):
                             "title": result_block.find("h3").text,
                             "url": result_block.findAll("a")[0]["href"],
                             "description": unicodedata.normalize(
-                                "NFKD", result_block.find("div", class_="VwiC3b yXK7lf lVm3ye r025kc hJNv6b Hdw6tb").text)
+                                "NFKD", result_block.find("div", class_="VwiC3b yXK7lf lVm3ye r025kc hJNv6b Hdw6tb").text
+                            ),
+                            "page_count": None
                         }
                     results.append(result)
     return results
