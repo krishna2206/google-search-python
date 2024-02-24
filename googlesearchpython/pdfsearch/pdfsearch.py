@@ -1,12 +1,12 @@
-from googlesearchpython.filesearch.parser import parse_html_result
+from googlesearchpython.pdfsearch.parser import parse_html_result
 from googlesearchpython.requests import Requests
 from googlesearchpython.constants import LANGUAGES
 from googlesearchpython.googlesearch import GoogleSearch
 from googlesearchpython.utils import extract_html_block
 
 
-class FileSearch(GoogleSearch, Requests):
-	def __init__(self, query, filetype, limit=10, page=1, lang="fr", region="fr", safe_search=False) -> None:
+class PdfSearch(GoogleSearch, Requests):
+	def __init__(self, query, limit=10, page=1, lang="fr", region="fr", safe_search=False) -> None:
 		super().__init__(query, lang, region, safe_search)
 
 		self._session.headers.update({
@@ -22,7 +22,6 @@ class FileSearch(GoogleSearch, Requests):
             "TE": "trailers"
         })
 
-		self.filetype = filetype
 		self.limit = limit
 		self.page = page
 		self.results = {
@@ -61,7 +60,7 @@ class FileSearch(GoogleSearch, Requests):
 
 	def __fetch_raw_result(self):
 		request_body = {
-			"q": self.query + f" filetype:{self.filetype}",
+			"q": self.query + f" filetype",
 			"hl": self.lang,
 			"safe": "off" if self.safe_search is False else "on",
 			"client": "firefox-b-d",
