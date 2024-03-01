@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-VERSION = '2024.02.11-beta1'
+VERSION = '2024.03.01-beta1'
 DESCRIPTION = 'A Python package for searching in Google Search'
 LONG_DESCRIPTION = 'A Python package for searching in Google Search, with the ability to search for images, videos, news, and specific file types.'
 

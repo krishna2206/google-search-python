@@ -1,12 +1,16 @@
 from googlesearchpython.filesearch.parser import parse_html_result
 from googlesearchpython.requests import Requests
-from googlesearchpython.constants import LANGUAGES
+from googlesearchpython.constants import FILE_TYPES, LANGUAGES
 from googlesearchpython.googlesearch import GoogleSearch
 from googlesearchpython.utils import extract_html_block
 
 
 class FileSearch(GoogleSearch, Requests):
-	def __init__(self, query, filetype, limit=10, page=1, lang="fr", region="fr", safe_search=False) -> None:
+	def __init__(self, query: str, filetype: str, limit: int = 10,
+		page: int = 1, lang: str = "fr", region: str = "fr", safe_search: bool = False
+	) -> None:
+		if filetype not in FILE_TYPES:
+			raise ValueError(f"Unsupported file type '{filetype}'. Supported file types are {FILE_TYPES}")
 		super().__init__(query, lang, region, safe_search)
 
 		self._session.headers.update({
@@ -51,7 +55,7 @@ class FileSearch(GoogleSearch, Requests):
 		html_result = self.__fetch_raw_result()
 		html_result = extract_html_block(html_result)
 
-		parsed_results = parse_html_result(html_result)
+		parsed_results = parse_html_result(html_result=html_result, filetype=self.filetype)
 
 		if len(parsed_results) == 0:
 			self.results["end"] = True

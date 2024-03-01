@@ -51,7 +51,10 @@ class PageSearch(GoogleSearch, Requests):
         html_result = self.__fetch_raw_result()
         html_result = extract_html_block(html_result)
 
-        relevant_result, related_questions, results = parse_html_result(html_result)
+        if html_result is None:
+            relevant_result, related_questions, results = (None, None, [])
+        else:
+            relevant_result, related_questions, results = parse_html_result(html_result)
 
         if len(results) == 0:
             self.results["end"] = True
